@@ -7,7 +7,7 @@ import './App.css'
 const App = () => {
   return (
     <>
-    <h1>ProyectoPrincipal</h1>
+    <h1>Proyecto Principal</h1>
     </>
   )
 }
