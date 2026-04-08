@@ -8,7 +8,9 @@ import Inicio from "./views/Inicio";
 import Categorias from "./views/Categorias";
 import Catalogo from "./views/Catalogo";
 import Productos from "./views/Productos";
+import { supabase } from "./database/supabaseconfig";
 import Login from "./views/Login";
+
 import RutaProtegida from "./components/rutas/RutaProtegida";
 import Pagina404 from "./views/Pagina404";
 import "./App.css";
