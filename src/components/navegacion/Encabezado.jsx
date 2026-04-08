@@ -100,15 +100,18 @@ const Encabezado = () => {
               <strong>Catálogo</strong>
             </Nav.Link>
 
-            <hr />
 
-            {/* Ícono cerrar sesión en barra superior */}
-            <Nav.Link onClick={cerrarSesion} className="text-white">
+          {/* Ícono cerrar sesión en barra superior */}
+          {mostrarMenu ? null : (
+            <Nav.Link
+              onClick={cerrarSesion}
+              className={mostrarMenu ? "color-texto-marca" : "text-white"}
+            >
               <i className="bi-box-arrow-right me-2"></i>
-              <strong>Cerrar sesión</strong>
             </Nav.Link>
+          )}
 
-            <hr />
+          <hr />
           </Nav>
 
           {/* Información de usuario y botón cerrar sesión */}
