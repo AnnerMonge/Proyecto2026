@@ -15,7 +15,6 @@ const Encabezado = () => {
     navigate(ruta);
     setMostrarMenu(false);
   };
-
   const cerrarSesion = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -50,6 +49,7 @@ const Encabezado = () => {
         </Nav.Link>
       </Nav>
     );
+
   } else {
     if (esCatalogo) {
       contenidoMenu = (
@@ -100,18 +100,17 @@ const Encabezado = () => {
               <strong>Catálogo</strong>
             </Nav.Link>
 
+            {/* Ícono cerrar sesión en barra superior */}
+            {mostrarMenu ? null : (
+              <Nav.Link
+                onClick={cerrarSesion}
+                className={mostrarMenu ? "color-texto-marca" : "text-white"}
+              >
+                <i className="bi-box-arrow-right me-2"></i>
+              </Nav.Link>
+            )}
 
-          {/* Ícono cerrar sesión en barra superior */}
-          {mostrarMenu ? null : (
-            <Nav.Link
-              onClick={cerrarSesion}
-              className={mostrarMenu ? "color-texto-marca" : "text-white"}
-            >
-              <i className="bi-box-arrow-right me-2"></i>
-            </Nav.Link>
-          )}
-
-          <hr />
+            <hr />
           </Nav>
 
           {/* Información de usuario y botón cerrar sesión */}
@@ -185,6 +184,7 @@ const Encabezado = () => {
       </Container>
     </Navbar>
   );
+
 };
 
 export default Encabezado;

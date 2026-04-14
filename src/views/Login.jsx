@@ -21,10 +21,7 @@ const Login = () => {
         setError("Usuario o contraseña incorrectos");
         return;
       }
-
-      if (data.user) {
-        localStorage.setItem("usuario-supabase", usuario);
-      }
+      localStorage.setItem("usuario-supabase", data.user.email);
 
       navegar("/");
     } catch (err) {
@@ -32,6 +29,15 @@ const Login = () => {
       console.error("Error en la solicitud:", err);
     }
   };
+  useEffect(() => {
+  const usuarioGuardado = localStorage.getItem("usuario-supabase");
+
+  if (usuarioGuardado) {
+    navegar("/", { replace: true });
+  }
+}, [navegar]);
+
+
   const estiloContenedor = {
     position: "fixed",
     top: 0,
@@ -58,11 +64,6 @@ const Login = () => {
     </div>
   );
 
-  useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario-supabase");
-    if (usuarioGuardado) {
-      navegar("/");
-    }
-  }, [navegar]);
+
 };
 export default Login;
