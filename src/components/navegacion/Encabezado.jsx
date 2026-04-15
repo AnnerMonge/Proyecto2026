@@ -20,7 +20,7 @@ const Encabezado = () => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
 
-      localStorage.removeItem("usuario-supabase");
+      sessionStorage.removeItem("usuario-supabase");
       setMostrarMenu(false);
       navigate("/login");
     } catch (err) {

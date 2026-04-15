@@ -21,7 +21,7 @@ const Login = () => {
         setError("Usuario o contraseña incorrectos");
         return;
       }
-      localStorage.setItem("usuario-supabase", data.user.email);
+      sessionStorage.setItem("usuario-supabase", data.user.email);
 
       navegar("/");
     } catch (err) {
