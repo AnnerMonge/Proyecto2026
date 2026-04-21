@@ -30,12 +30,12 @@ const Login = () => {
     }
   };
   useEffect(() => {
-  const usuarioGuardado = localStorage.getItem("usuario-supabase");
+    const usuarioGuardado = sessionStorage.getItem("usuario-supabase");
 
-  if (usuarioGuardado) {
-    navegar("/", { replace: true });
-  }
-}, [navegar]);
+    if (usuarioGuardado) {
+      navegar("/", { replace: true });
+    }
+  }, [navegar]);
 
 
   const estiloContenedor = {

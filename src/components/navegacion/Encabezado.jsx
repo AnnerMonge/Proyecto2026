@@ -30,9 +30,10 @@ const Encabezado = () => {
 
   // Detectar rutas especiales
   const esLogin = location.pathname === "/login";
+  const usuarioEmail = sessionStorage.getItem("usuario-supabase");
   const esCatalogo =
     location.pathname === "/catalogo" &&
-    localStorage.getItem("usuario-supabase") === null;
+    usuarioEmail === null;
 
   // Contenido del menú
   let contenidoMenu;
@@ -118,8 +119,7 @@ const Encabezado = () => {
             <div className="mt-3 p-3 rounded bg-light text-dark">
               <p className="mb-2">
                 <i className="bi-envelope-fill me-2"></i>
-                {localStorage.getItem("usuario-supabase")?.toLowerCase() ||
-                  "Usuario"}
+                {usuarioEmail?.toLowerCase() || "Usuario"}
               </p>
               <button
                 className="btn btn-outline-danger mt-3 w-100"
