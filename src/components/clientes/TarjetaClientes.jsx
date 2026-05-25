@@ -2,18 +2,18 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Card, Row, Col, Spinner, Button } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-const TarjetaProducto = ({
-  producto,
+const TarjetaCliente = ({
+  clientes,
   abrirModalEdicion,
   abrirModalEliminacion,
-  generarPDFProducto,
+  generarPDFCliente,
 }) => {
   const [cargando, setCargando] = useState(true);
   const [idTarjetaActiva, setIdTarjetaActiva] = useState(null);
 
   useEffect(() => {
-    setCargando(!(producto && producto.length > 0));
-  }, [producto]);
+    setCargando(!(clientes && clientes.length > 0));
+  }, [clientes]);
 
   const manejarTeclaEscape = useCallback((evento) => {
     if (evento.key === "Escape") setIdTarjetaActiva(null);
@@ -32,65 +32,50 @@ const TarjetaProducto = ({
     <>
       {cargando ? (
         <div className="text-center my-5">
-          <h5>Cargando productos...</h5>
+          <h5>Cargando clientes...</h5>
           <Spinner animation="border" variant="success" role="status" />
         </div>
       ) : (
         <div>
-          {producto.map((producto) => {
-            const tarjetaActiva = idTarjetaActiva === producto.id_producto;
-
+          {clientes.map((cliente) => {
+            const tarjetaActiva = idTarjetaActiva === cliente.id_cliente;
             return (
               <Card
-                key={producto.id_producto}
-                className="mb-3 border-0 rounded-3 shadow-sm w-100 tarjeta-producto-contenedor"
-                onClick={() => alternarTarjetaActiva(producto.id_producto)}
+                key={cliente.id_cliente}
+                className="mb-3 border-0 rounded-3 shadow-sm w-100 tarjeta-cliente-contenedor"
+                onClick={() => alternarTarjetaActiva(cliente.id_cliente)}
                 tabIndex={0}
                 onKeyDown={(evento) => {
                   if (evento.key === "Enter" || evento.key === " ") {
                     evento.preventDefault();
-                    alternarTarjetaActiva(producto.id_producto);
+                    alternarTarjetaActiva(cliente.id_cliente);
                   }
                 }}
-                aria-label={`Producto ${producto.nombre_producto}`}
+                aria-label={`Cliente ${cliente.nombre_cliente}`}
               >
                 <Card.Body
-                  className={`p-2 tarjeta-producto-cuerpo ${
+                  className={`p-2 tarjeta-cliente-cuerpo ${
                     tarjetaActiva
-                      ? "tarjeta-producto-cuerpo-activa"
-                      : "tarjeta-producto-cuerpo-inactiva"
+                      ? "tarjeta-cliente-cuerpo-activo"
+                      : "tarjeta-cliente-cuerpo-inactivo"
                   }`}
                 >
                   <Row className="align-items-center gx-3">
                     <Col xs={2} className="px-2">
-                      <div className="bg-light d-flex align-items-center justify-content-center rounded tarjeta-producto-placeholder-imagen">
-                        <i className="bi bi-bookmark text-muted fs-3"></i>
+                      <div className="bg-light d-flex align-items-center justify-content-center rounded tarjeta-cliente-placeholder-imagen">
+                        <i className="bi bi-person-circle text-muted fs-3"></i>
                       </div>
                     </Col>
-
-                    <Col xs={5} className="text-start">
+                    <Col xs={6} className="text-start">
                       <div className="fw-semibold text-truncate">
-                        {producto.nombre_producto}
+                        {cliente.nombre_cliente} {cliente.apellido_cliente}
                       </div>
                       <div className="small text-muted text-truncate">
-                        {producto.descripcion_producto}
-                      </div>
-                      <div className="small text-muted text-truncate">
-                        {producto.categoria_producto}
-                      </div>
-                      <div className="small text-muted text-truncate">
-                        {producto.precio_venta}
-                      </div>
-                      <div className="small text-muted text-truncate">
-                        {producto.url_imagen}
+                        {cliente.celular}
                       </div>
                     </Col>
-
-                    <Col
-                      xs={5}
-                      className="d-flex flex-column align-items-end justify-content-center text-end"
-                    >
-                      <div className="fw-semibold small">Disponible</div>
+                    <Col xs={4} className="text-end">
+                      <div className="fw-semibold small text-success">Activo</div>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -99,45 +84,38 @@ const TarjetaProducto = ({
                   <div
                     role="dialog"
                     aria-modal="true"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIdTarjetaActiva(null);
-                    }}
-                    className="tarjeta-producto-capa"
+                    onClick={(e) => e.stopPropagation()}
+                    className="tarjeta-cliente-capa"
                   >
                     <div
-                      className="d-flex gap-2 tarjeta-producto-botones-capa"
+                      className="d-flex gap-2 tarjeta-cliente-botones-capa"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Button
                         variant="outline-warning"
                         size="sm"
                         onClick={() => {
-                          abrirModalEdicion(producto);
+                          abrirModalEdicion(cliente);
                           setIdTarjetaActiva(null);
                         }}
-                        aria-label={`Editar ${producto.nombre_producto}`}
                       >
                         <i className="bi bi-pencil"></i>
                       </Button>
-
                       <Button
                         variant="outline-danger"
                         size="sm"
                         onClick={() => {
-                          abrirModalEliminacion(producto);
+                          abrirModalEliminacion(cliente);
                           setIdTarjetaActiva(null);
                         }}
-                        aria-label={`Eliminar ${producto.nombre_producto}`}
                       >
                         <i className="bi bi-trash"></i>
                       </Button>
-                      {/* BOTÓN PDF AÑADIDO */}
                       <Button
                         variant="outline-info"
                         size="sm"
                         className="m-1"
-                        onClick={() => generarPDFProducto(item)}
+                        onClick={() => generarPDFCliente && generarPDFCliente(cliente)}
                       >
                         <i className="bi bi-file-earmark-pdf"></i>
                       </Button>
@@ -153,4 +131,5 @@ const TarjetaProducto = ({
   );
 };
 
-export default TarjetaProducto;
+export default TarjetaCliente;
+

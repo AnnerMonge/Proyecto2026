@@ -1,4 +1,4 @@
-import  React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Alert, Spinner } from "react-bootstrap";
 import { supabase } from "../database/supabaseconfig";
 import ModalRegistroProducto from "../components/productos/ModalRegistroProducto";
@@ -9,6 +9,9 @@ import ModalEliminacionProducto from "../components/productos/ModalEliminacionPr
 import Paginacion from "../components/ordenamiento/Paginacion";
 import NotificacionOperacion from "../components/NotificacionOperacion";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -19,6 +22,82 @@ const Productos = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
   const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
+
+
+const generarPDFProducto = async (producto, categorias) => {
+  const doc = new jsPDF();
+
+  // Función interna para convertir URL de imagen a Base64
+  const convertirImagenABase64 = (url) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous"; // Evita problemas de CORS con Supabase
+      img.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0);
+        resolve(canvas.toDataURL("image/jpeg"));
+      };
+      img.onerror = function () {
+        resolve(null); // Si falla la carga, devuelve null para no romper el PDF
+      };
+      img.src = url;
+    });
+  };
+
+  // 1. Encabezado del Reporte
+  doc.setFontSize(18);
+  doc.setTextColor(40, 40, 40);
+  doc.text("FICHA TÉCNICA DE PRODUCTO", 14, 20);
+
+  // Línea decorativa
+  doc.setDrawColor(0, 123, 255); // Azul institucional
+  doc.setLineWidth(1);
+  doc.line(14, 24, 195, 24);
+
+  // 2. Obtener Nombre de la Categoría
+  const catEncontrada = categorias.find(
+    (c) => c.id_categoria === producto.categoria_producto
+  );
+  const nombreCategoria = catEncontrada ? catEncontrada.nombre_categoria : "Sin categoría";
+
+  // 3. Renderizar la Imagen si existe
+  let finalYDeImagen = 30; 
+  if (producto.url_imagen) {
+    const base64Img = await convertirImagenABase64(producto.url_imagen);
+    if (base64Img) {
+      // Dibujar imagen (X, Y, Ancho, Alto)
+      doc.addImage(base64Img, "JPEG", 14, 30, 50, 50);
+      finalYDeImagen = 85; // Espacio que ocupó la imagen + margen
+    }
+  }
+
+  // 4. Tabla de Datos del Producto
+  // Si hay imagen la tabla empieza abajo de ella, si no, empieza en Y: 30
+  const startYTabla = producto.url_imagen ? Math.max(30, finalYDeImagen - 55) : 30;
+  // Si hay imagen, empujamos la tabla a la derecha (X: 70) para que no se superpongan
+  const margenIzquierdoTabla = producto.url_imagen ? 70 : 14;
+
+  autoTable(doc, {
+    startY: startYTabla,
+    margin: { left: margenIzquierdoTabla },
+    styles: { fontSize: 11, cellPadding: 4 },
+    headStyles: { fillColor: [0, 123, 255], textColor: [255, 255, 255] },
+    head: [["Especificación", "Detalle"]],
+    body: [
+      ["ID Producto:", `#${producto.id_producto}`],
+      ["Nombre del Artículo:", producto.nombre_producto],
+      ["Categoría:", nombreCategoria],
+      ["Precio de Venta:", `$${Number(producto.precio_venta).toFixed(2)}`],
+      ["Descripción:", producto.descripcion_producto || "Sin descripción disponible."],
+    ],
+  });
+
+  // 5. Guardar el archivo PDF
+  doc.save(`Producto_${producto.id_producto}.pdf`);
+};
 
   const [nuevoProducto, setNuevoProducto] = useState({
     nombre_producto: "",
@@ -65,8 +144,8 @@ const Productos = () => {
     if (!textoBusqueda.trim()) {
       setProductosFiltrados(productos);
     } else {
-        const textoLower = textoBusqueda.toLowerCase().trim();
-        const filtrados = productos.filter((prod) => {
+      const textoLower = textoBusqueda.toLowerCase().trim();
+      const filtrados = productos.filter((prod) => {
         const nombre = prod.nombre_producto?.toLowerCase() || "";
         const descripcion = prod.descripcion_producto?.toLowerCase() || "";
         const precio = prod.precio_venta?.toString() || "";
@@ -118,7 +197,7 @@ const Productos = () => {
     try {
       setCargando(true);
       const { data, error } = await supabase
-        .from("Productos")
+        .from("productos")
         .select("*")
         .order("id_producto", { ascending: true });
       if (error) throw error;
@@ -163,7 +242,7 @@ const Productos = () => {
         .getPublicUrl(nombreArchivo);
       const urlPublica = urlData.publicUrl;
 
-      const { error } = await supabase.from("Productos").insert([
+      const { error } = await supabase.from("productos").insert([
         {
           nombre_producto: nuevoProducto.nombre_producto,
           descripcion_producto: nuevoProducto.descripcion_producto || null,
@@ -234,7 +313,6 @@ const Productos = () => {
       alert("Selecciona una imagen válida (JPG, PNG, etc.)");
     }
   };
-
   const actualizarProducto = async () => {
     try {
       if (
@@ -244,7 +322,7 @@ const Productos = () => {
       ) {
         setToast({
           mostrar: true,
-          mensaje: "Complete los campos obligatorios",
+          mensaje: "Completa los campos obligatorios",
           tipo: "advertencia",
         });
         return;
@@ -252,43 +330,67 @@ const Productos = () => {
 
       setMostrarModalEdicion(false);
 
-      let urlPublica = productoEditar.url_imagen;
+      let datosActualizados = {
+        nombre_producto: productoEditar.nombre_producto,
+        descripcion_producto: productoEditar.descripcion_producto || null,
+        categoria_producto: productoEditar.categoria_producto,
+        precio_venta: parseFloat(productoEditar.precio_venta),
+        url_imagen: productoEditar.url_imagen,
+      };
 
       if (productoEditar.archivo) {
         const nombreArchivo = `${Date.now()}_${productoEditar.archivo.name}`;
+
         const { error: uploadError } = await supabase.storage
           .from("imagenes_productos")
-          .upload(nombreArchivo, productoEditar.archivo, {});
+          .upload(nombreArchivo, productoEditar.archivo);
+
         if (uploadError) throw uploadError;
 
-        const { data: urlData } = await supabase.storage
+        const { data: urlData } = supabase.storage
           .from("imagenes_productos")
           .getPublicUrl(nombreArchivo);
-        urlPublica = urlData.publicUrl;
+
+        datosActualizados.url_imagen = urlData.publicUrl;
+
+        if (productoEditar.url_imagen) {
+          const nombreAnterior = productoEditar.url_imagen
+            .split("/")
+            .pop()
+            .split("?")[0];
+          await supabase.storage
+            .from("imagenes_productos")
+            .remove([nombreAnterior])
+            .catch(() => {});
+        }
       }
 
       const { error } = await supabase
-        .from("Productos")
-        .update({
-          nombre_producto: productoEditar.nombre_producto,
-          descripcion_producto: productoEditar.descripcion_producto || null,
-          categoria_producto: productoEditar.categoria_producto,
-          precio_venta: parseFloat(productoEditar.precio_venta),
-          url_imagen: urlPublica,
-        })
-        .eq("id_producto", productoEditar.id_producto)
-        .select();
+        .from("productos")
+        .update(datosActualizados)
+        .eq("id_producto", productoEditar.id_producto);
 
       if (error) throw error;
 
       await cargarProductos();
+
+      setProductoEditar({
+        id_producto: "",
+        nombre_producto: "",
+        descripcion_producto: "",
+        categoria_producto: "",
+        precio_venta: "",
+        url_imagen: "",
+        archivo: null,
+      });
+
       setToast({
         mostrar: true,
         mensaje: "Producto actualizado correctamente",
         tipo: "exito",
       });
     } catch (err) {
-      console.error("Error al actualizar producto:", err);
+      console.error("Error al actualizar:", err);
       setToast({
         mostrar: true,
         mensaje: "Error al actualizar producto",
@@ -302,7 +404,7 @@ const Productos = () => {
     try {
       setMostrarModalEliminacion(false);
       const { error } = await supabase
-        .from("Productos")
+        .from("productos")
         .delete()
         .eq("id_producto", productoAEliminar.id_producto)
         .select();
@@ -359,6 +461,7 @@ const Productos = () => {
           producto={productosPaginados}
           abrirModalEdicion={abrirModalEdicion}
           abrirModalEliminacion={abrirModalEliminacion}
+          generarPDFProducto={(prod) => generarPDFProducto(prod, categorias)} //
         />
       </Col>
 
@@ -371,6 +474,7 @@ const Productos = () => {
               cargando={cargando}
               abrirModalEdicion={abrirModalEdicion}
               abrirModalEliminacion={abrirModalEliminacion}
+              generarPDFProducto={(prod) => generarPDFProducto(prod, categorias)} // <- Añadido
             />
           </Col>
         </Row>

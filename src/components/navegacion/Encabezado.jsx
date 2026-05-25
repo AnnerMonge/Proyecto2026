@@ -31,9 +31,7 @@ const Encabezado = () => {
   // Detectar rutas especiales
   const esLogin = location.pathname === "/login";
   const usuarioEmail = sessionStorage.getItem("usuario-supabase");
-  const esCatalogo =
-    location.pathname === "/catalogo" &&
-    usuarioEmail === null;
+  const esCatalogo = location.pathname === "/catalogo" && usuarioEmail === null;
 
   // Contenido del menú
   let contenidoMenu;
@@ -50,7 +48,6 @@ const Encabezado = () => {
         </Nav.Link>
       </Nav>
     );
-
   } else {
     if (esCatalogo) {
       contenidoMenu = (
@@ -90,6 +87,30 @@ const Encabezado = () => {
             >
               {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
               <strong>Productos</strong>
+            </Nav.Link>
+
+            <Nav.Link
+              onClick={() => manejarNavegacion("/empleados")}
+              className={mostrarMenu ? "color-texto-marca" : "text-white"}
+            >
+              {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
+              <strong>Empleados</strong>
+            </Nav.Link>
+
+            <Nav.Link
+              onClick={() => manejarNavegacion("/clientes")}
+              className={mostrarMenu ? "color-texto-marca" : "text-white"}
+            >
+              {mostrarMenu ? <i className="bi-people-fill me-2"></i> : null}
+              <strong>Clientes</strong>
+            </Nav.Link>
+
+            <Nav.Link
+              onClick={() => manejarNavegacion("/ventas")}
+              className={mostrarMenu ? "color-texto-marca" : "text-white"}
+            >
+              {mostrarMenu ? <i className="bi-receipt me-2"></i> : null}
+              <strong>Ventas</strong>
             </Nav.Link>
 
             {/* Opción para ir al catálogo público desde admin */}
@@ -184,7 +205,6 @@ const Encabezado = () => {
       </Container>
     </Navbar>
   );
-
 };
 
 export default Encabezado;
