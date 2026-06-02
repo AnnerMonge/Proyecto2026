@@ -38,31 +38,19 @@ const Login = () => {
   }, [navegar]);
 
 
-  const estiloContenedor = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(135deg, #FFDEE9, #B5FFFC)",
-    overflow: "hidden",
-    padding: "20px",
-  };
+ 
   return (
-    <div style={estiloContenedor}>
-      <FormularioLogin
-        usuario={usuario}
-        contrasena={contrasena}
-        error={error}
-        setUsuario={setUsuario}
-        setContrasena={setContrasena}
-        iniciarSesion={iniciarsesion}
-      />
-    </div>
-  );
+  <div className="login-page">
+    <FormularioLogin
+      usuario={usuario}
+      contrasena={contrasena}
+      error={error}
+      setUsuario={setUsuario}
+      setContrasena={setContrasena}
+      iniciarSesion={iniciarsesion}
+    />
+  </div>
+);
 
 
 };

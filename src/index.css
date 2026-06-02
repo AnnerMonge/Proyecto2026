@@ -1,0 +1,187 @@
+/* Paleta de colores global */
+:root {
+  --color-primary: #00e5ff;
+  --color-primary-light: #00ffff;
+  --color-primary-light2: #00cfff;
+  --color-dark: #02111f;
+  --color-gradient-start: #006b8f;
+  --color-gradient-end: #00d9ff;
+}
+
+/* Botones Bootstrap personalizados */
+.btn-primary {
+  background-color: #00cfff !important;
+  border-color: #00cfff !important;
+  color: #000 !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5) !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+  background-color: #00e5ff !important;
+  border-color: #00e5ff !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.8) !important;
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.8) !important;
+  background-color: #00e5ff !important;
+  border-color: #00e5ff !important;
+}
+
+.btn-primary:active {
+  background-color: #00d9ff !important;
+  border-color: #00d9ff !important;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.8) !important;
+}
+
+/* Botones secundarios */
+.btn-secondary {
+  background-color: #00d9ff !important;
+  border-color: #00d9ff !important;
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.btn-secondary:hover {
+  background-color: #00e5ff !important;
+  border-color: #00e5ff !important;
+}
+
+/* Botones de peligro - Eliminar */
+.btn-danger {
+  background-color: #ff4757 !important;
+  border-color: #ff4757 !important;
+}
+
+.btn-danger:hover {
+  background-color: #ff6b7a !important;
+  border-color: #ff6b7a !important;
+  box-shadow: 0 0 10px rgba(255, 71, 87, 0.5) !important;
+}
+
+/* Botones de warning - Editar */
+.btn-warning {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.btn-warning:hover {
+  background-color: #ffb300 !important;
+  border-color: #ffb300 !important;
+}
+
+/* Botones pequeños */
+.btn-sm {
+  padding: 0.4rem 0.8rem !important;
+  font-size: 0.875rem !important;
+}
+
+/* Estilos para inputs */
+.form-control {
+  border: 1px solid #00e5ff !important;
+  background-color: rgba(0, 229, 255, 0.05) !important;
+  color: #333 !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-control:focus {
+  border-color: #00e5ff !important;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.3) !important;
+  background-color: rgba(0, 229, 255, 0.1) !important;
+}
+
+/* Estilos para tablas */
+.table {
+  border-color: #00e5ff !important;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 229, 255, 0.1) !important;
+}
+
+.table thead th {
+  border-bottom: 2px solid #00e5ff !important;
+  color: #02111f !important;
+  background-color: rgba(0, 229, 255, 0.2) !important;
+  font-weight: bold !important;
+}
+
+/* Estilos para modales */
+.modal-content {
+  border: 2px solid #00e5ff !important;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3) !important;
+}
+
+.modal-header {
+  background: linear-gradient(90deg, #006b8f, #00d9ff) !important;
+  border-bottom: 2px solid #00e5ff !important;
+  color: white !important;
+}
+
+.modal-title {
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.btn-close {
+  filter: invert(1) !important;
+}
+
+/* Estilos para alertas */
+.alert {
+  border-color: #00e5ff !important;
+  border-left: 4px solid #00e5ff !important;
+}
+
+.alert-danger {
+  border-color: #ff4757 !important;
+  border-left: 4px solid #ff4757 !important;
+  background-color: rgba(255, 71, 87, 0.1) !important;
+  color: #ff4757 !important;
+}
+
+.alert-success {
+  border-color: #2ed573 !important;
+  border-left: 4px solid #2ed573 !important;
+  background-color: rgba(46, 213, 115, 0.1) !important;
+  color: #2ed573 !important;
+}
+
+.alert-warning {
+  border-color: #ffc107 !important;
+  border-left: 4px solid #ffc107 !important;
+  background-color: rgba(255, 193, 7, 0.1) !important;
+  color: #ffc107 !important;
+}
+
+/* Bordes */
+.border-primary {
+  border-color: #00e5ff !important;
+}
+
+/* Badges */
+.badge-primary {
+  background-color: #00e5ff !important;
+  color: #000 !important;
+}
+
+/* Spinner */
+.spinner-border {
+  color: #00e5ff !important;
+}
+
+/* Links */
+a {
+  color: #00e5ff !important;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #00ffff !important;
+  text-decoration: underline;
+}

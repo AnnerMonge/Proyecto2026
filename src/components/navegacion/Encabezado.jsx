@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import logo from "../../assets/logo.png";
 import { supabase } from "../../database/supabaseconfig";
+import ChatIA from "../IA/ChatIA";
 
 const Encabezado = () => {
   const [mostrarMenu, setMostrarMenu] = useState(false);
@@ -27,6 +28,8 @@ const Encabezado = () => {
       console.error("Error cerrando sesión:", err.message);
     }
   };
+
+  const [mostrarChatIA, setMostrarChatIA] = useState(false);
 
   // Detectar rutas especiales
   const esLogin = location.pathname === "/login";
@@ -120,6 +123,24 @@ const Encabezado = () => {
             >
               {mostrarMenu ? <i className="bi-images me-2"></i> : null}
               <strong>Catálogo</strong>
+            </Nav.Link>
+
+
+          <Nav.Link onClick={() => setMostrarChatIA(true)} className="text-white">
+            <i className="bi bi-robot me-2"></i>
+          </Nav.Link>
+
+        
+          
+          <ChatIA mostrar={mostrarChatIA} onCerrar={() => setMostrarChatIA(false)} />
+          
+          {/* Opción para ir al catálogo público desde admin */}
+            <Nav.Link
+              onClick={() => manejarNavegacion("/Dashboard")}
+              className={mostrarMenu ? "color-texto-marca" : "text-white"}
+            >
+              {mostrarMenu ? <i className="bi-images me-2"></i> : null}
+              <strong>Dashboard</strong>
             </Nav.Link>
 
             {/* Ícono cerrar sesión en barra superior */}

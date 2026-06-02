@@ -4,12 +4,12 @@
 }
 
 .color-navbar {
-  background-color: #eb7f04 !important;
-  background-image: linear-gradient(90deg, #1a086e 0%, #2889b6 50%, #2697cc 100%);
+  background-color: #02111f !important;
+  background-image: linear-gradient(90deg, #006b8f 0%, #00d9ff 100%) !important;
 }
 
 .color-texto-marca {
-  color: #1e3d87 !important;
+  color: #00e5ff !important;
   font-size: 18px;
 }
 
@@ -189,6 +189,116 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #050b18;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+
+  background-size: 50px 50px;
+}
+
+/* Estilos para títulos y encabezados de vistas */
+h1, h2 {
+  color: #02111f !important;
+  font-weight: bold !important;
+}
+
+h1 {
+  border-bottom: 3px solid #00e5ff !important;
+  padding-bottom: 10px;
+}
+
+/* Estilos para iconos de candado */
+svg, .fa {
+  color: #00e5ff !important;
+}
+
+/* Botones generales de vistas */
+.btn-nuevo {
+  background: linear-gradient(90deg, #00cfff, #00ffff) !important;
+  color: #000 !important;
+  border: none !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5) !important;
+}
+
+.btn-nuevo:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.8) !important;
+}
+
+/* Contenedor de búsqueda */
+.cuadro-busqueda {
+  border: 2px solid #00e5ff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2) !important;
+}
+
+.cuadro-busqueda:focus {
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5) !important;
+}
+
+/* Estilos para paginación */
+.pagination .page-link {
+  color: #00e5ff !important;
+  border-color: #00e5ff !important;
+}
+
+.pagination .page-link:hover {
+  background-color: #00e5ff !important;
+  color: #000 !important;
+  border-color: #00e5ff !important;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #00e5ff !important;
+  border-color: #00e5ff !important;
+  color: #000 !important;
+}
+
+/* Tarjetas generales */
+.card {
+  border: 1px solid #00e5ff !important;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.card:hover {
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4) !important;
+  transform: translateY(-5px);
+}
+
+.card-header {
+  background: linear-gradient(90deg, #006b8f, #00d9ff) !important;
+  color: white !important;
+  border-bottom: 2px solid #00e5ff !important;
+}
+
+/* Estilos para tarjetas de productos */
+.tarjeta-producto {
+  border: 2px solid #00e5ff !important;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3) !important;
+}
+
+/* Separadores */
+hr {
+  border-top: 2px solid #00e5ff !important;
+  opacity: 0.5;
+}
+
+/* Estilos para contenedores principales */
+.container-main {
+  background-color: rgba(0, 229, 255, 0.02) !important;
+  border-radius: 8px !important;
+}
 
 
 

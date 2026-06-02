@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
-
+import { Form, Button, Alert } from "react-bootstrap";
+import "./FormularioLogin.css";
 
 const FormularioLogin = ({
   usuario,
@@ -11,47 +11,57 @@ const FormularioLogin = ({
   iniciarSesion,
 }) => {
   return (
-    <Card
-      style={{ minWidth: "320px", maxWidth: "400px", width: "100%" }}
-      className="p-4 shadow-lg"
-    >
-      <Card.Body>
-        <h3 className="text-center mb-4">Iniciar Sesión</h3>
+    <div className="login-container">
+      <div className="login-left">
+        <h2 className="login-title">Login</h2>
 
-        {error && <Alert variant="danger">{error}</Alert>}
+        {error && (
+          <Alert variant="danger" className="mt-3">
+            {error}
+          </Alert>
+        )}
 
         <Form>
-          <Form.Group className="mb-3" controlId="usuario">
-            <Form.Label>Usuario</Form.Label>
+          <Form.Group className="mb-4">
             <Form.Control
+              className="login-input"
               type="text"
-              placeholder="Ingresa tu usuario"
+              placeholder="Usuario"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
-              required
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="contrasena">
-            <Form.Label>Contraseña</Form.Label>
+          <Form.Group className="mb-4">
             <Form.Control
+              className="login-input"
               type="password"
-              placeholder="Ingresa tu contraseña"
+              placeholder="Contraseña"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
-              required
             />
           </Form.Group>
 
-          <Button variant="primary" className="w-100" onClick={iniciarSesion}>
+          <Button
+            className="login-button"
+            onClick={iniciarSesion}
+          >
             Iniciar Sesión
           </Button>
         </Form>
-      </Card.Body>
-    </Card>
-    
-  );
+      </div>
 
+      <div className="login-right">
+        <h1>WELCOME BACK!</h1>
+
+        <p>
+          Bienvenido nuevamente a Discosa.
+          <br />
+          Accede al sistema para continuar.
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default FormularioLogin;
