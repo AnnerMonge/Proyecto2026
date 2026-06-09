@@ -7,6 +7,8 @@ const TarjetaProducto = ({
   abrirModalEdicion,
   abrirModalEliminacion,
   generarPDFProducto,
+  copiarProducto,
+  generarQImagen,
 }) => {
   const [cargando, setCargando] = useState(true);
   const [idTarjetaActiva, setIdTarjetaActiva] = useState(null);
@@ -137,9 +139,28 @@ const TarjetaProducto = ({
                         variant="outline-info"
                         size="sm"
                         className="m-1"
-                        onClick={() => generarPDFProducto(item)}
+                        onClick={() => generarPDFProducto && generarPDFProducto(producto)}
                       >
                         <i className="bi bi-file-earmark-pdf"></i>
+                      </Button>
+
+                      <Button
+                        variant="outline-success"
+                        size="sm"
+                        className="m-1"
+                        onClick={() => copiarProducto && copiarProducto(producto)}
+                      >
+                        <i className="bi bi-clipboard"></i>
+                      </Button>
+
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        className="m-1"
+                        onClick={() => generarQImagen && generarQImagen(producto)}
+                        title="Generar código QR"
+                      >
+                        <i className="bi bi-qr-code"></i>
                       </Button>
                     </div>
                   </div>

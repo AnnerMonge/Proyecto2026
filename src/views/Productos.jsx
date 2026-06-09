@@ -6,6 +6,7 @@ import TablaProductos from "../components/productos/TablaProductos";
 import TarjetaProducto from "../components/productos/TarjetaProductos";
 import ModalEdicionProducto from "../components/productos/ModalEdicionProducto";
 import ModalEliminacionProducto from "../components/productos/ModalEliminacionProducto";
+import ModalQRProducto from "../components/productos/ModalQRProducto";
 import Paginacion from "../components/ordenamiento/Paginacion";
 import NotificacionOperacion from "../components/NotificacionOperacion";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
@@ -22,6 +23,8 @@ const Productos = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
   const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
+  const [mostrarModalQR, setMostrarModalQR] = useState(false);
+  const [productoQR, setProductoQR] = useState(null);
 
 
 const generarPDFProducto = async (producto, categorias) => {
@@ -427,6 +430,44 @@ const generarPDFProducto = async (producto, categorias) => {
     }
   };
 
+  const copiarProducto = async (producto) => {
+    if (!producto) return;
+
+    const texto = `
+    ID: ${producto.id_producto}
+    Nombre: ${producto.nombre_producto}
+    Descripción: ${producto.descripcion_producto || "Sin descripción"}`
+    
+    try {
+      await navigator.clipboard.writeText(texto);
+      setToast({
+        mostrar: true,
+        mensaje: `Producto "${producto.nombre_producto}" copiado al portapapeles.`,
+        tipo: "exito",
+      });
+    } catch (err) {
+      console.error("Error al copiar producto:", err);
+      setToast({
+        mostrar: true,
+        mensaje: "No se pudo copiar al portapapeles.",
+        tipo: "error",
+      });
+    }
+  };
+
+  const generarQImagen = (producto) => {
+    if (!producto.url_imagen) {
+      setToast({
+        mostrar: true,
+        mensaje: "Este producto no tiene imagen asociada",
+        tipo: "advertencia"
+      });
+      return;
+    }
+    setProductoQR(producto);
+    setMostrarModalQR(true);
+  };
+
   return (
     <Container className="mt-3">
       <Row className="align-items-center mb-3">
@@ -461,7 +502,9 @@ const generarPDFProducto = async (producto, categorias) => {
           producto={productosPaginados}
           abrirModalEdicion={abrirModalEdicion}
           abrirModalEliminacion={abrirModalEliminacion}
-          generarPDFProducto={(prod) => generarPDFProducto(prod, categorias)} //
+          generarPDFProducto={(prod) => generarPDFProducto(prod, categorias)}
+          copiarProducto={copiarProducto}
+          generarQImagen={generarQImagen}
         />
       </Col>
 
@@ -474,7 +517,9 @@ const generarPDFProducto = async (producto, categorias) => {
               cargando={cargando}
               abrirModalEdicion={abrirModalEdicion}
               abrirModalEliminacion={abrirModalEliminacion}
-              generarPDFProducto={(prod) => generarPDFProducto(prod, categorias)} // <- Añadido
+              generarPDFProducto={(prod) => generarPDFProducto(prod, categorias)}
+              copiarProducto={copiarProducto}
+              generarQImagen={generarQImagen}
             />
           </Col>
         </Row>
@@ -527,6 +572,12 @@ const generarPDFProducto = async (producto, categorias) => {
         setMostrarModalEliminacion={setMostrarModalEliminacion}
         productoAEliminar={productoAEliminar}
         eliminarProducto={eliminarProducto}
+      />
+
+      <ModalQRProducto
+        mostrar={mostrarModalQR}
+        onHide={() => setMostrarModalQR(false)}
+        producto={productoQR}
       />
     </Container>
   );
